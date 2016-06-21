@@ -28,7 +28,7 @@ module.exports = function() {
 
   app.use(function(error, request, response, next){
     if (error) {
-      if (!process.env.NODE_ENV) {
+      if (process.env.NODE_ENV == 'production') {
         console.log(error);
         console.log('Renderizar página de erro.')
         response.status(500).render('erro/500');

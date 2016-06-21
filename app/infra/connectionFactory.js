@@ -4,7 +4,7 @@ console.log('acessou o createDbConnection')
 
 var db;
 
-if (!process.env.NODE_ENV) {
+if (process.env.NODE_ENV == 'production') {
   var connectionString = "postgres://qgdefwysamxxra:Bv_XPqpiltHwoDx1FU_BwwV-EU@ec2-50-19-222-159.compute-1.amazonaws.com:5432/d43dstqa82e03e";
   //var connectionString = "postgres://postgres:root@localhost:5432/casadocodigo_nodejs";
 }

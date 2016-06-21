@@ -3,7 +3,7 @@ module.exports = function(app) {
 
     var connection = app.infra.connectionFactory;
     var produtosDao = new app.infra.ProdutosDao(connection);
-    if (!process.env.NODE_ENV) {
+    if (process.env.NODE_ENV == 'production') {
       var createTableProdutos = produtosDao.createTable();
       produtosPromise.then(function(data){
         console.log(data);
