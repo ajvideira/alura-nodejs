@@ -15,7 +15,7 @@ module.exports = function(app) {
 
     var produtosPromise = produtosDao.lista();
     produtosPromise.then(function(data){
-      console.log(data);
+      console.log(data.length);
       response.render('home/index', {livros: data});
     }).catch(function(erro){
       console.log('Entrou no catch do home.route');
