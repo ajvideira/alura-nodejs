@@ -4,8 +4,8 @@ module.exports = function(app) {
     var connection = app.infra.connectionFactory;
     var produtosDao = new app.infra.ProdutosDao(connection);
     if (process.env.NODE_ENV == 'production') {
-      var createTableProdutos = produtosDao.createTable();
-      produtosPromise.then(function(data){
+      var createTablePromise = produtosDao.createTable();
+      createTablePromise.then(function(data){
         console.log(data);
 
         var produtosPromise = produtosDao.lista();
