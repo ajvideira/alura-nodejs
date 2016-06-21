@@ -1,16 +1,17 @@
 module.exports = function(app) {
-  app.get('/', function(request, response){
+  app.get('/', function(request, response, next){
 
-    var connection = app.infra.connectionFactory();
+    var connection = app.infra.connectionFactory;
     var produtosDao = new app.infra.ProdutosDao(connection);
 
-    produtosDao.lista(function(err, results, next) {
-      if (err) {
-        next(err);
-      }
-      response.render('home/index', {livros: results});
+    var produtosPromise = produtosDao.lista();
+    produtosPromise.then(function(data){
+      console.log(data);
+      response.render('home/index', {livros: data});
+    }).catch(function(erro){
+      console.log('Entrou no catch do home.route');
+      next(erro);
     });
 
-    connection.end();
   });
 }

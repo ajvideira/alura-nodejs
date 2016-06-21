@@ -1,29 +1,24 @@
-var mysql = require('mysql');
+var pgp = require('pg-promise')();
 
-function createDbConnection() {
-  console.log('acessou o createDbConnection')
+console.log('acessou o createDbConnection')
 
-  if (!process.env.NODE_ENV) {
-    return mysql.createConnection({
-      host: 'localhost',
-      user: 'root',
-      password: 'root',
-      database: 'casadocodigo_nodejs'
-    });
-  }
+var db;
 
-  if (process.env.NODE_ENV == 'test') {
-    return mysql.createConnection({
-      host: 'localhost',
-      user: 'root',
-      password: 'root',
-      database: 'casadocodigo_nodejs_testdadasd'
-    });
-  }
-
+if (!process.env.NODE_ENV) {
+  var connectionString = "postgres://qgdefwysamxxra:Bv_XPqpiltHwoDx1FU_BwwV-EU@ec2-50-19-222-159.compute-1.amazonaws.com:5432/d43dstqa82e03e";
+  //var connectionString = "postgres://postgres:root@localhost:5432/casadocodigo_nodejs";
 }
 
+if (process.env.NODE_ENV == 'dev') {
+  var connectionString = "postgres://postgres:root@localhost:5432/casadocodigo_nodejs";
+}
+
+if (process.env.NODE_ENV == 'test') {
+  var connectionString = "postgres://postgres:root@localhost:5432/casadocodigo_nodejs_test";
+}
+
+db = pgp(connectionString);
+
 module.exports = function() {
-  console.log('acessou o wrapper');
-  return createDbConnection;
+  return db;
 }

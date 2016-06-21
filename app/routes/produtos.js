@@ -1,7 +1,7 @@
 module.exports = function(app) {
   app.get('/produtos', function(request, response){
 
-    var connection = app.infra.connectionFactory();
+    var connection = app.infra.connectionFactory;
     var produtosDao = new app.infra.ProdutosDao(connection);
 
     produtosDao.lista(function(err, results, next) {
