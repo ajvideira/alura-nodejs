@@ -40,9 +40,23 @@ ProdutosDao.prototype.createTable = function() {
   });
 };
 
-/*ProdutosDao.prototype.salva = function(produto, callback) {
-  this._connection.query('INSERT INTO livros set ?', produto, callback);
-};*/
+ProdutosDao.prototype.salva = function(produto) {
+  var conexao2 = this._connection;
+
+  return new Promise(function(resolve, reject){
+    conexao2.query('INSERT INTO livros (titulo, descricao, preco)  values (${titulo}, ${descricao}, ${preco})', produto)
+      .then(function(data){
+        resolve(data);
+      }, function(erro){
+        console.log(erro);
+        reject(erro);
+      }).catch(function(erro){
+        console.log('Entrou no catch do DAO');
+        console.log(erro);
+        reject(new Error('Ocorreu um erro'));
+      });
+  });
+};
 
 module.exports = function() {
   return ProdutosDao;

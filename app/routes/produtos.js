@@ -4,21 +4,21 @@ module.exports = function(app) {
     var connection = app.infra.connectionFactory;
     var produtosDao = new app.infra.ProdutosDao(connection);
 
-    produtosDao.lista(function(err, results, next) {
-      if (err) {
-        next(err);
-      }
+    var produtosPromise = produtosDao.lista();
+    produtosPromise.then(function(data){
+      console.log(data);
       response.format({
         html: function() {
-          response.render('produtos/lista', {lista: results});
+          response.render('produtos/lista', {lista: data});
         },
         json: function() {
-          response.json(results);
+          response.json(data);
         }
       });
+    }).catch(function(erro){
+      console.log('Entrou no catch do produtos.route: ' + erro);
+      next(erro);
     });
-
-    connection.end();
   });
 
   app.get('/produtos/form', function(request, response) {
@@ -48,11 +48,16 @@ module.exports = function(app) {
         return;
       }
 
-      var connection = app.infra.connectionFactory();
+      var connection = app.infra.connectionFactory;
       var produtosDao = new app.infra.ProdutosDao(connection);
 
-      produtosDao.salva(produto, function(err, results){
+      var produtosPromise = produtosDao.salva(produto);
+      produtosPromise.then(function(data){
+        console.log(data);
         response.redirect('/produtos');
+      }).catch(function(erro){
+        console.log('Entrou no catch do produtos.route.salva');
+        next(erro);
       });
   });
 
