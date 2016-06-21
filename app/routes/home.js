@@ -7,20 +7,22 @@ module.exports = function(app) {
       var createTableProdutos = produtosDao.createTable();
       produtosPromise.then(function(data){
         console.log(data);
+
+        var produtosPromise = produtosDao.lista();
+        produtosPromise.then(function(data){
+          console.log(data);
+          response.render('home/index', {livros: data});
+        }).catch(function(erro){
+          console.log('Entrou no catch do home.route');
+          next(erro);
+        });
+
       }).catch(function(erro){
         console.log('Entrou no catch do home.route');
         next(erro);
       });
     }
 
-    var produtosPromise = produtosDao.lista();
-    produtosPromise.then(function(data){
-      console.log(data);
-      response.render('home/index', {livros: data});
-    }).catch(function(erro){
-      console.log('Entrou no catch do home.route');
-      next(erro);
-    });
 
   });
 }
